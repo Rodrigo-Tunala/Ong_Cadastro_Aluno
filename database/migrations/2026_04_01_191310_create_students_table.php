@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('school_year');
             $table->foreignId('responsible_id')->constrained('responsibles')->onDelete('cascade');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

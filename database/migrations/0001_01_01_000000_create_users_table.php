@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('cep', 10)->nullable();
             $table->string('phone', 20)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

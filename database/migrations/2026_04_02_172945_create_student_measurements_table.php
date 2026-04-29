@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('student_measurements', function (Blueprint $table) {
             $table->id();
-            $table->string('shirt_size');
-            $table->string('shorts_size');
-            $table->string('shoe_size');
+            $table->string('shirt_size')->nullable();
+            $table->string('shorts_size')->nullable();
+            $table->string('shoe_size')->nullable();
             $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->timestamps();
         });
