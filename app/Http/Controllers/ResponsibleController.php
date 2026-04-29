@@ -3,16 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\Responsible;
+use App\Services\ResponsibleService;
 use Illuminate\Http\Request;
 
 class ResponsibleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    private ResponsibleService $responsibleService;
+
+    public function __construct(ResponsibleService $responsibleService)
+    {
+        $this->responsibleService = $responsibleService;
+    }
+    
+
     public function index()
     {
-        //
+        $responsibles = $this->responsibleService->getAllResponsibles();
+
+        return response()->json([
+            'message' => 'Lista de responsáveis',
+            'data' => $responsibles
+        ], 200);
+
     }
 
     /**
@@ -28,7 +41,26 @@ class ResponsibleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+        ]);
+
+        try {
+            $responsible = $this->responsibleService->createResponsible($validated);
+
+            return response()->json([
+                'message' => 'Responsável criado com sucesso',
+                'data' => $responsible
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao criar responsável',
+                'error' => $e->getMessage()
+            ], 500);
+
+        }
+            
     }
 
     /**
@@ -36,7 +68,13 @@ class ResponsibleController extends Controller
      */
     public function show(Responsible $responsible)
     {
-        //
+        $responsible = $this->responsibleService->getResponsibleById($responsible->id);
+
+        return response()->json([
+            'message' => 'Detalhes do responsável',
+            'data' => $responsible
+        ], 200);
+        
     }
 
     /**
@@ -52,7 +90,29 @@ class ResponsibleController extends Controller
      */
     public function update(Request $request, Responsible $responsible)
     {
-        //
+        
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'phone' => 'sometimes|string|max:20',
+            ]);
+            
+        try{
+            $responsible = $this->responsibleService->updateResponsible($responsible, $validated);
+            
+            return response()->json([
+                'message' => 'Responsável atualizado com sucesso',
+                'data' => $responsible
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao atualizar responsável',
+                'error' => $e->getMessage()
+            ], 500);
+
+        }
+
+        
     }
 
     /**
@@ -60,6 +120,18 @@ class ResponsibleController extends Controller
      */
     public function destroy(Responsible $responsible)
     {
-        //
+
+        try {
+            $this->responsibleService->deleteResponsible($responsible);
+        
+            return response()->json([
+                'message' => 'Responsável deletado com sucesso'
+            ], 200);    
+        }catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Erro ao deletar responsável',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }
