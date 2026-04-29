@@ -5,12 +5,19 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @method \Laravel\Sanctum\NewAccessToken createToken(string $name, array $abilities = ['*'])
+ */
+
 class User extends Authenticatable
 {
+    use SoftDeletes;
+    
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasApiTokens;
 
@@ -20,7 +27,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'name', 
         'email',
         'password',
         'rg',
@@ -30,6 +37,7 @@ class User extends Authenticatable
         'city',
         'cep',
         'phone',
+        'type',
     ];
 
     /**
@@ -54,4 +62,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    
+    
 }

@@ -3,18 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StudentMeasurement extends Model
 {
+    
     protected $fillable = [
         'shirt_size',
         'shorts_size',
         'shoe_size',
         'student_id',
-    ];
-
-    public function student()
-    {
-        return $this->belongsTo(Student::class);
-    }
+        ];
+        
+        public function student()
+        {
+            return $this->belongsTo(Student::class);
+        }
 }

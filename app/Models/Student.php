@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Student extends Model
 {
+    use SoftDeletes;
+    
     protected $fillable = [
         'name',
         'birth_date',
@@ -17,14 +20,17 @@ class Student extends Model
         'school_situation',
         'school_year',
         'responsible_id',
-    ];
-
-    public function responsible()
-    {
+        ];
+        
+        public function responsible()
+        {
         return $this->belongsTo(Responsible::class);
+        }
+        
+        public function studentMeasurement()
+        {
+            return $this->hasOne(StudentMeasurement::class);
     }
-    public function measurements()
-    {
-        return $this->hasMany(StudentMeasurement::class);
-    }
+
+    
 }
