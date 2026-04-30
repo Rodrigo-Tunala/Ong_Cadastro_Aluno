@@ -10,6 +10,7 @@ Route::post('/register', [UserController::class, 'store']);
 
 Route::post('/login', [UserController::class, 'login']);
 
+Route::post('/logout', [UserController::class, 'logout']);
 
 
 
@@ -18,6 +19,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', function (Request $request) {
         return $request->user();
     });
+
+
+    Route::get('/users', [UserController::class, 'index']);
     
     Route::put('/users/{user}', [UserController::class, 'update']);
     
@@ -34,5 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/students/{student}/restore', [StudentController::class, 'restore']);
 
     Route::delete('/users/{user}', [UserController::class, 'destroy']);
+
+    Route::post('/users/{user}/restore', [UserController::class, 'restore']);
 
 });
