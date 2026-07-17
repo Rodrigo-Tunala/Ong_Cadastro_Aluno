@@ -20,12 +20,16 @@ class ResponsibleService
     public function createResponsible(array $data)
     {
         return DB::transaction(function () use ($data) {
-            $responsible = Responsible::firstOrCreate(
+            $responsible = Responsible::firstOrNew(
                 [
                     'name' => $data['name'],
-                    'phone' => $data['phone'],
+                    'cpf' => $data['cpf'],
                 ]
             );
+
+            $responsible->phone = $data['phone'] ?? $responsible->phone;
+            $responsible->save();
+
             return $responsible->load('students');
         });
     }

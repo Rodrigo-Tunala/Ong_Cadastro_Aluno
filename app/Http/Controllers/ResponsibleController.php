@@ -44,6 +44,7 @@ class ResponsibleController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
+            'cpf' => 'required|string|max:14|unique:responsibles',
         ]);
 
         try {
@@ -92,8 +93,9 @@ class ResponsibleController extends Controller
     {
         
         $validated = $request->validate([
-            'name' => 'sometimes|string|max:255',
-            'phone' => 'sometimes|string|max:20',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'cpf' => 'required|string|unique:responsibles|max:14',
             ]);
             
         try{

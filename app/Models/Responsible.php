@@ -12,11 +12,13 @@ class Responsible extends Model
     protected $fillable = [
         'name',
         'phone',
-        ];
-        
-        public function students(){
-            return $this->hasMany(Student::class);
-        }
+        'cpf',
+    ];
+
+    public function students()
+    {
+        return $this->hasMany(Student::class);
+    }
         
 }
 

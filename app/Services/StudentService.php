@@ -4,9 +4,7 @@ namespace App\Services;
 
 use App\Models\Responsible;
 use App\Models\Student;
-use App\Models\StudentMeasurement;
 use Illuminate\Support\Facades\DB;
-use Exception;
 
 class StudentService
 {
@@ -28,17 +26,20 @@ class StudentService
         return DB::transaction(function () use ($data) {
 
         
-            $responsible = Responsible::withTrashed()->firstOrCreate(
+            $responsible = Responsible::withTrashed()->firstOrNew(
                 [
                     'name' => $data['responsible_name'],
-                    'phone' => $data['responsible_phone'],
+                    'cpf' => $data['responsible_cpf'],
                 ]
             );
 
-            // Se estava soft-deletado, restaura
+            $responsible->phone = $data['responsible_phone'];
+
             if ($responsible->trashed()) {
                 $responsible->restore();
             }
+
+            $responsible->save();
 
             $student = Student::create([
                 'name' => $data['name'],
@@ -77,17 +78,22 @@ class StudentService
 
             if (isset($data['responsible'])) {
                 // Busca responsável incluindo soft-deletados
-                $responsible = Responsible::withTrashed()->firstOrCreate(
+                $responsible = Responsible::withTrashed()->firstOrNew(
                     [
                         'name' => $data['responsible']['name'],
-                        'phone' => $data['responsible']['phone'],
+                        'cpf' => $data['responsible']['cpf'] ,
                     ]
                 );
 
-                // Se estava soft-deletado, restaura
+                if (isset($data['responsible']['phone'])) {
+                    $responsible->phone = $data['responsible']['phone'];
+                }
+
                 if ($responsible->trashed()) {
                     $responsible->restore();
                 }
+
+                $responsible->save();
 
                 $student->update([
                     'responsible_id' => $responsible->id

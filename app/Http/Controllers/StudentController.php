@@ -46,6 +46,7 @@ class StudentController extends Controller
             'school_year' => 'required|string|max:255',
             'responsible_name' => 'required|string|max:255',
             'responsible_phone' => 'required|string|max:20',
+            'responsible_cpf' => 'required|string|unique:responsibles|max:14',
             'shirt_size' => 'nullable|string|max:10',
             'shorts_size' => 'nullable|string|max:10',
             'shoe_size' => 'nullable|string|max:10',
@@ -95,8 +96,9 @@ class StudentController extends Controller
             'school_situation' => 'sometimes|string|max:255',
             'school_year' => 'sometimes|string|max:255',
 
-            'responsible.name' => 'sometimes|string|max:255',
-            'responsible.phone' => 'sometimes|string|max:20',
+            'responsible.name' => 'required|string|max:255',
+            'responsible.phone' => 'required|string|max:20',
+            'responsible.cpf' => 'required|string|unique:responsibles|max:14',
 
             'studentMeasurement.shirt_size' => 'sometimes|nullable|string|max:10',
             'studentMeasurement.shorts_size' => 'sometimes|nullable|string|max:10',
